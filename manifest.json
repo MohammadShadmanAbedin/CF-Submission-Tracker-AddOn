@@ -1,0 +1,36 @@
+{
+    "manifest_version": 2,
+
+    "name": "CF Problem Tracker",
+    "version": "1.0.0",
+
+    "description": "Tracks Codeforces solving time and fills the shared tracksheet.",
+
+    "permissions": [
+        "storage",
+        "tabs",
+        "https://codeforces.com/*"
+    ],
+
+    "browser_action": {
+        "default_title": "CF Problem Tracker",
+        "default_popup": "pop-up/pop-up.html"
+    },
+
+    "background": {
+        "scripts": [
+            "background/background.js"
+        ]
+    },
+
+    "content_scripts": [
+        {
+            "matches": [
+                "https://codeforces.com/*"
+            ],
+            "js": [
+                "content/codeforces.js"
+            ]
+        }
+    ]
+}

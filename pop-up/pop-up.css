@@ -1,0 +1,15 @@
+body {
+    width: 300px;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+h1 {
+    margin-top: 0;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    cursor: pointer;
+}
