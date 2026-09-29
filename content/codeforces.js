@@ -12,6 +12,29 @@ const problemInfo = {
 };
 
 
+// The signed-in account link is inside Codeforces' page header.
+function getLoggedInHandle() {
+    const profileLink = Array.from(
+        document.querySelectorAll("#header a[href]")
+    ).find((link) => {
+        try {
+            return new URL(link.href, window.location.origin).pathname
+                .startsWith("/profile/");
+        } catch (error) {
+            return false;
+        }
+    });
+
+    if (!profileLink) {
+        return null;
+    }
+
+    const profilePath = new URL(profileLink.href, window.location.origin).pathname;
+    const handle = profilePath.match(/^\/profile\/([^/]+)/);
+    return handle ? decodeURIComponent(handle[1]) : null;
+}
+
+
 // ==========================================
 // 1. GET CONTEST ID + PROBLEM INDEX
 // ==========================================
@@ -57,29 +80,20 @@ console.log("CF Problem Tracker:");
 console.log(problemInfo);
 
 
-// ==========================================
-// 4. SEND PROBLEM INFO TO BACKGROUND
-// ==========================================
-
-browser.runtime.sendMessage({
-    type: "PROBLEM_INFO",
-    data: problemInfo
-});
-
-
-// ==========================================
-// 5. LISTEN FOR REQUEST FROM POPUP
-// ==========================================
+// Respond to a direct request from the background script. Returning a Promise
+// makes the response work with Firefox's WebExtension messaging API.
 
 browser.runtime.onMessage.addListener((message) => {
 
     if (message.type === "GET_PROBLEM_INFO") {
-
-        browser.runtime.sendMessage({
-            type: "PROBLEM_INFO",
-            data: problemInfo
+        return Promise.resolve({
+            url: problemInfo.url,
+            contestId: problemInfo.contestId,
+            problemIndex: problemInfo.problemIndex,
+            rating: problemInfo.rating,
+            handle: getLoggedInHandle()
         });
-
     }
 
+    return undefined;
 });

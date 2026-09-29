@@ -14,9 +14,28 @@
 
     <h1>CF Tracker</h1>
 
-    <p id="status">Not tracking</p>
+    <section id="problemDetails" hidden>
+        <p><strong>Problem:</strong> <span id="problemName"></span></p>
+        <p><strong>Rating:</strong> <span id="problemRating"></span></p>
+    </section>
 
-    <button id="startButton">START</button>
+    <p id="inactiveMessage">No active problem</p>
+    <p id="errorMessage" role="alert" hidden></p>
+
+    <section id="timerDetails" hidden>
+        <p><strong>Time:</strong></p>
+        <p id="elapsedTime" aria-live="off">00:00</p>
+        <p><strong>Attempts:</strong> <span id="attemptCount">0</span></p>
+        <p><strong>Status:</strong> <span id="trackingStatus">Tracking...</span></p>
+    </section>
+
+    <section id="completedDetails" hidden>
+        <p><strong>Status:</strong> Accepted ✓</p>
+        <p><strong>Time:</strong> <span id="solveTime"></span> min</p>
+        <p><strong>Attempts:</strong> <span id="completedAttempts"></span></p>
+    </section>
+
+    <button id="trackingButton" type="button">START</button>
 
     <script src="pop-up.js"></script>
 

@@ -9,7 +9,9 @@
     "permissions": [
         "storage",
         "tabs",
-        "https://codeforces.com/*"
+        "https://codeforces.com/*",
+        "https://script.google.com/*",
+        "https://script.googleusercontent.com/*"
     ],
 
     "browser_action": {
@@ -19,6 +21,7 @@
 
     "background": {
         "scripts": [
+            "shared/api.js",
             "background/background.js"
         ]
     },

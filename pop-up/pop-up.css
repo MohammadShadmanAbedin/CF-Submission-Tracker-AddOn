@@ -2,6 +2,7 @@ body {
     width: 300px;
     padding: 20px;
     font-family: Arial, sans-serif;
+    color: #222;
 }
 
 h1 {
@@ -12,4 +13,24 @@ button {
     width: 100%;
     padding: 10px;
     cursor: pointer;
+}
+
+#problemDetails p,
+#timerDetails p,
+#completedDetails p {
+    margin: 10px 0;
+}
+
+#elapsedTime {
+    font-size: 28px;
+    font-weight: bold;
+    font-variant-numeric: tabular-nums;
+}
+
+#errorMessage {
+    color: #b00020;
+}
+
+#trackingStatus {
+    font-weight: bold;
 }
