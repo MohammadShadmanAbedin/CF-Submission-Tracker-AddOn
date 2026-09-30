@@ -1,47 +1,184 @@
+:root {
+    color-scheme: light;
+    font-family: "Segoe UI", sans-serif;
+    color: #18333b;
+    background: #eaf7f8;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    --glass-border: rgba(255, 255, 255, 0.76);
+    --glass-shadow: 0 12px 30px rgba(35, 91, 103, 0.13);
+    --ink-muted: #607980;
+    --teal: #087f83;
+}
+
 body {
-    width: 300px;
-    padding: 20px;
-    font-family: Arial, sans-serif;
-    color: #222;
+    box-sizing: border-box;
+    width: 340px;
+    min-height: 300px;
+    margin: 0;
+    padding: 22px;
+    overflow: hidden;
+    background:
+        linear-gradient(125deg, rgba(255, 255, 255, 0.68), transparent 43%),
+        linear-gradient(155deg, #dff5f5 0%, #e8edff 54%, #e1f6ed 100%);
+    color: #18333b;
 }
 
 h1 {
-    margin-top: 0;
+    margin: 0 0 18px;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 25px;
+    font-weight: 600;
+    line-height: 1.15;
+    color: #123e48;
+}
+
+section {
+    margin: 12px 0;
+    padding: 14px;
+    border: 1px solid var(--glass-border);
+    border-radius: 17px;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.34));
+    box-shadow: var(--glass-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(18px) saturate(145%);
+    -webkit-backdrop-filter: blur(18px) saturate(145%);
+}
+
+p {
+    margin: 10px 0;
+    color: var(--ink-muted);
+    font-size: 13px;
+    line-height: 1.45;
+}
+
+strong,
+#trackingStatus {
+    color: #234951;
+    font-weight: 650;
 }
 
 button {
-    width: 100%;
-    padding: 10px;
+    box-sizing: border-box;
+    min-height: 38px;
+    padding: 9px 14px;
+    border: 1px solid rgba(255, 255, 255, 0.82);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.62);
+    box-shadow: 0 4px 12px rgba(49, 103, 111, 0.1), inset 0 1px 0 #fff;
+    color: #24545a;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 650;
     cursor: pointer;
+    transition: transform 140ms ease, box-shadow 140ms ease, background 140ms ease;
 }
 
-#problemDetails p,
-#timerDetails p,
-#completedDetails p {
-    margin: 10px 0;
+button:hover:not(:disabled) {
+    transform: translateY(-1px);
+    background: rgba(255, 255, 255, 0.88);
+    box-shadow: 0 7px 16px rgba(49, 103, 111, 0.16), inset 0 1px 0 #fff;
 }
 
-#elapsedTime {
-    font-size: 28px;
-    font-weight: bold;
-    font-variant-numeric: tabular-nums;
+button:active:not(:disabled) {
+    transform: translateY(0);
 }
 
-#errorMessage {
-    color: #b00020;
+button:focus-visible,
+#studentIdInput:focus-visible {
+    outline: 3px solid rgba(8, 127, 131, 0.32);
+    outline-offset: 2px;
+}
+
+button:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+#studentIdSummary p {
+    margin-top: 0;
+}
+
+#studentIdSummary button,
+#cancelStudentIdButton {
+    width: auto;
 }
 
 #studentIdInput {
     box-sizing: border-box;
     width: 100%;
-    margin: 6px 0;
-    padding: 8px;
+    min-height: 40px;
+    margin: 7px 0 10px;
+    padding: 9px 11px;
+    border: 1px solid rgba(80, 133, 142, 0.22);
+    border-radius: 11px;
+    background: rgba(255, 255, 255, 0.65);
+    box-shadow: inset 0 1px 3px rgba(45, 90, 98, 0.08);
+    color: #18333b;
+    font: inherit;
+    font-size: 13px;
 }
 
+#studentIdSetup label {
+    color: #45636a;
+    font-size: 12px;
+    font-weight: 650;
+}
+
+#saveStudentIdButton,
+#trackingButton {
+    width: 100%;
+    border-color: rgba(255, 255, 255, 0.48);
+    background: linear-gradient(135deg, #087f83, #19a5a0);
+    box-shadow: 0 7px 16px rgba(8, 127, 131, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+    color: #fff;
+}
+
+#saveStudentIdButton:hover:not(:disabled),
+#trackingButton:hover:not(:disabled) {
+    background: linear-gradient(135deg, #087276, #159590);
+    box-shadow: 0 9px 19px rgba(8, 127, 131, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+#cancelStudentIdButton {
+    margin-left: 6px;
+}
+
+#problemDetails p,
+#timerDetails p,
+#completedDetails p {
+    margin: 7px 0;
+}
+
+#elapsedTime {
+    margin: 2px 0 10px;
+    color: #087f83;
+    font-size: 34px;
+    font-weight: 650;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0;
+}
+
+#inactiveMessage {
+    padding: 6px 1px;
+}
+
+#errorMessage,
 #studentIdError {
-    color: #b00020;
+    color: #a83d4b;
 }
 
-#trackingStatus {
-    font-weight: bold;
+#trackingButton {
+    margin-top: 8px;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        transition-duration: 0.01ms !important;
+    }
 }
