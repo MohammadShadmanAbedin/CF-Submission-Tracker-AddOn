@@ -14,6 +14,21 @@
 
     <h1>CF Tracker</h1>
 
+    <section id="studentIdSection">
+        <div id="studentIdSummary" hidden>
+            <p>Student: <span id="savedStudentId"></span></p>
+            <button id="changeStudentIdButton" type="button">Change ID</button>
+        </div>
+
+        <div id="studentIdSetup" hidden>
+            <label for="studentIdInput">Student ID</label>
+            <input id="studentIdInput" type="text" autocomplete="off" maxlength="7" placeholder="C followed by 6 digits">
+            <button id="saveStudentIdButton" type="button">SAVE</button>
+            <button id="cancelStudentIdButton" type="button" hidden>Cancel</button>
+            <p id="studentIdError" role="alert" hidden></p>
+        </div>
+    </section>
+
     <section id="problemDetails" hidden>
         <p><strong>Problem:</strong> <span id="problemName"></span></p>
         <p><strong>Rating:</strong> <span id="problemRating"></span></p>

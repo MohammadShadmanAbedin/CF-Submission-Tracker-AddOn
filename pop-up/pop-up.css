@@ -31,6 +31,17 @@ button {
     color: #b00020;
 }
 
+#studentIdInput {
+    box-sizing: border-box;
+    width: 100%;
+    margin: 6px 0;
+    padding: 8px;
+}
+
+#studentIdError {
+    color: #b00020;
+}
+
 #trackingStatus {
     font-weight: bold;
 }

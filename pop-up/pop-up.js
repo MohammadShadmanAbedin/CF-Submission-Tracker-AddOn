@@ -16,9 +16,19 @@ const completedDetails = document.getElementById("completedDetails");
 const solveTime = document.getElementById("solveTime");
 const completedAttempts = document.getElementById("completedAttempts");
 const trackingButton = document.getElementById("trackingButton");
+const studentIdSummary = document.getElementById("studentIdSummary");
+const savedStudentId = document.getElementById("savedStudentId");
+const studentIdSetup = document.getElementById("studentIdSetup");
+const studentIdInput = document.getElementById("studentIdInput");
+const saveStudentIdButton = document.getElementById("saveStudentIdButton");
+const changeStudentIdButton = document.getElementById("changeStudentIdButton");
+const cancelStudentIdButton = document.getElementById("cancelStudentIdButton");
+const studentIdError = document.getElementById("studentIdError");
 
 let trackingData = null;
 let lastCompletedResult = null;
+let studentId = "";
+let editingStudentId = false;
 
 
 // Format elapsed wall-clock time from the saved startTime.
@@ -51,6 +61,7 @@ function renderProblem(problem) {
 
 function renderState() {
     const isTracking = Boolean(trackingData && trackingData.tracking);
+    renderStudentId(isTracking);
 
     if (isTracking) {
         renderProblem(trackingData.problem);
@@ -81,14 +92,31 @@ function renderState() {
 }
 
 
+function renderStudentId(isTracking) {
+    const hasStudentId = Boolean(studentId);
+    studentIdSummary.hidden = !hasStudentId || editingStudentId;
+    studentIdSetup.hidden = hasStudentId && !editingStudentId;
+    savedStudentId.textContent = studentId;
+
+    studentIdInput.disabled = isTracking;
+    saveStudentIdButton.disabled = isTracking;
+    changeStudentIdButton.disabled = isTracking;
+    cancelStudentIdButton.disabled = isTracking;
+    cancelStudentIdButton.hidden = !hasStudentId || !editingStudentId;
+}
+
+
 async function loadState() {
-    const [state, completedResult] = await Promise.all([
+    const [state, completedResult, settings] = await Promise.all([
         browser.runtime.sendMessage({ type: "GET_TRACKING_STATE" }),
-        browser.runtime.sendMessage({ type: "GET_LAST_COMPLETED_RESULT" })
+        browser.runtime.sendMessage({ type: "GET_LAST_COMPLETED_RESULT" }),
+        browser.storage.local.get("studentId")
     ]);
 
     trackingData = state && state.tracking ? state : null;
     lastCompletedResult = completedResult;
+    studentId = settings.studentId || "";
+    studentIdInput.value = studentId;
     renderState();
 }
 
@@ -110,7 +138,64 @@ browser.storage.onChanged.addListener((changes, areaName) => {
         lastCompletedResult = changes.lastCompletedResult.newValue || null;
     }
 
+    if (changes.studentId) {
+        studentId = changes.studentId.newValue || "";
+        studentIdInput.value = studentId;
+    }
+
     renderState();
+});
+
+
+changeStudentIdButton.addEventListener("click", () => {
+    if (trackingData && trackingData.tracking) {
+        return;
+    }
+
+    editingStudentId = true;
+    studentIdError.hidden = true;
+    renderState();
+    studentIdInput.focus();
+});
+
+
+cancelStudentIdButton.addEventListener("click", () => {
+    if (trackingData && trackingData.tracking) {
+        return;
+    }
+
+    editingStudentId = false;
+    studentIdInput.value = studentId;
+    studentIdError.hidden = true;
+    renderState();
+});
+
+
+saveStudentIdButton.addEventListener("click", async () => {
+    const newStudentId = studentIdInput.value.trim();
+    studentIdError.hidden = true;
+
+    if (trackingData && trackingData.tracking) {
+        studentIdError.textContent = "Stop tracking before changing the Student ID.";
+        studentIdError.hidden = false;
+        return;
+    }
+
+    if (!/^C\d{6}$/.test(newStudentId)) {
+        studentIdError.textContent = "Enter an ID beginning with C followed by 6 digits.";
+        studentIdError.hidden = false;
+        return;
+    }
+
+    try {
+        await browser.storage.local.set({ studentId: newStudentId });
+        studentId = newStudentId;
+        editingStudentId = false;
+        renderState();
+    } catch (error) {
+        studentIdError.textContent = "Could not save the Student ID.";
+        studentIdError.hidden = false;
+    }
 });
 
 

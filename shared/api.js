@@ -14,7 +14,19 @@ function formatLocalDate(timestamp) {
 
 
 async function sendCompletedResultToSheet(result) {
+    const settings = await browser.storage.local.get("studentId");
+    const studentId = settings.studentId;
+
+    if (!studentId) {
+        throw new Error("Set your Student ID before submitting results.");
+    }
+
+    if (!/^C\d{6}$/.test(studentId)) {
+        throw new Error("Set a valid Student ID before submitting results.");
+    }
+
     const payload = {
+        studentId: studentId,
         problemLink: result.problem.url,
         verdict: result.verdict,
         solveTime: result.solveTimeMinutes,
